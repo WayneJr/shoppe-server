@@ -72,6 +72,8 @@ export async function loggedInUser(req: Request, res: Response, next: NextFuncti
     }
 }
 
+
+
 // function for returning results to the client
 function sendTokenResponse(user: IUser, statusCode: number, res: Response, role: string) {
     const accessToken: string = user.getSignedJwtToken(res);
