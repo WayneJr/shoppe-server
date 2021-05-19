@@ -1,7 +1,7 @@
 import User from '../models/User';
 import {Request, Response, NextFunction} from 'express';
 import ErrorResponse from '../../utils/errorResponse';
-import IUser from '../../utils/IUser';
+import IUser from '../interfaces/IUser';
 
 
 // @ts-ignore
@@ -22,7 +22,7 @@ export async function register(req: Request, res: Response, next: NextFunction) 
     const { name, email,  password, address } = req.body;
 
     try {
-        const user = await User.create({
+        const user: IUser = await User.create({
             name,
             email,
             password,
@@ -43,12 +43,12 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        const user = await User.findOne({ email }).select('+password');
+        const user: IUser | null = await User.findOne({ email }).select('+password');
         if (!user) {
             return next(new ErrorResponse(res, 'No such user found', 400).catcher());
         }
 
-        const isMatch = await user.matchPassword(password);
+        const isMatch: boolean = await user.matchPassword(password);
         if (!isMatch) {
             return next(new ErrorResponse(res, 'You entered an incorrect password', 400).catcher());
         }
@@ -59,9 +59,22 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+export async function loggedInUser(req: Request, res: Response, next: NextFunction) {
+    try {
+        // @ts-ignore
+        const user: IUser | null = await User.findById(req.user.id);
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch(err) {
+        return next(new ErrorResponse(res, err, 503).catcher());
+    }
+}
+
 // function for returning results to the client
 function sendTokenResponse(user: IUser, statusCode: number, res: Response, role: string) {
-    const accessToken = user.getSignedJwtToken(res);
+    const accessToken: string = user.getSignedJwtToken(res);
     res
     .status(statusCode)
     .json({

@@ -1,5 +1,6 @@
 import { root, register, login } from '../controllers/auth';
 import { Router } from 'express';
+import { protect } from '../middleware/auth';
 
 export const router: Router = Router();
 

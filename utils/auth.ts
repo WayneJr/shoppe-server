@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { jwtAccessSecret, jwtRefreshSecret, nodeEnv } from '../config/config';
-import IUser from './IUser';
+import IUser from '../api/interfaces/IUser';
 
 export function createAccessToken(user: IUser) {
     const options: {[k: string]: any} = {

@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
-import IUser from '../../utils/IUser';
+import IUser from '../interfaces/IUser';
 import crypto from 'crypto';
 import { createAccessToken, createRefreshToken } from '../../utils/auth';
 import sendRefreshToken from '../../utils/sendRefreshToken';
