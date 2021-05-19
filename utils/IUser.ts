@@ -11,6 +11,6 @@ export default interface IUser extends Document {
     resetPasswordToken: string;
     resetPasswordExpire: Date;
     getSignedJwtToken(res: Response): string;
-    matchPasword(enteredPassword: string): Promise<boolean>;
+    matchPassword(enteredPassword: string): Promise<boolean>;
     getResetPasswordToken(): string;
 }
